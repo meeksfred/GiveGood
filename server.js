@@ -26,7 +26,7 @@ app.use(morgan('dev'));
 // app routes
 
 // start server
-const server = module.exports = app.listen(PORT, function() {
+const server = module.exports = app.listen(PORT, () => {
   debug('server started');
   console.log('server up');
 });
