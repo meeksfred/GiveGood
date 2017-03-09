@@ -9,6 +9,7 @@
     "start-debug": "DEBUG='givegood*' npm start",
     "start-watch": "DEBUG='givegood*' ./node_modules/nodemon/bin/nodemon.js server.js",
     "lint": "./node_modules/eslint/bin/eslint.js .",
+    "test-debug": "DEBUG='givegood*' ./node_modules/mocha/bin/_mocha",
     "db-start": "mongod --dbpath=db"
   },
   "author": "",
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "bcrypt": "^1.0.2",
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "cors": "^2.8.1",
     "crypto": "0.0.3",
