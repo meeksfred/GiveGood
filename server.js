@@ -9,6 +9,10 @@ const mongoose = require('mongoose');
 const debug = require('debug')('givegood:server');
 const dotenv = require('dotenv');
 
+const userRouter = require('./route/user-router.js');
+
+const errorMiddleware = require('./lib/error-middleware.js');
+
 dotenv.load({path: `${__dirname}/.env`});
 
 // Connect to MongoDB
@@ -24,6 +28,8 @@ app.use(cors());
 app.use(morgan('dev'));
 
 // app routes
+app.use(userRouter);
+app.use(errorMiddleware);
 
 // start server
 const server = module.exports = app.listen(PORT, () => {
