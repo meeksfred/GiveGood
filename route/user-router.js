@@ -30,3 +30,14 @@ userRouter.post('/api/signup', jsonParser, (req, res, next) => {
   .then(token => res.send(token))
   .catch(next);
 });
+
+userRouter.get('/api/login', basicAuth, (req, res, next) => {
+  debug('hit route GET /api/login');
+
+  User.findOne({username: req.auth.username})
+  .then( user => user.comparePasswordHash(req.auth.password))
+  .catch( err => Promise.reject(createError(401, err.message)))
+  .then( user => user.generateToken())
+  .then( token => res.send(token))
+  .catch(next);
+});

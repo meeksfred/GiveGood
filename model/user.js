@@ -8,6 +8,8 @@ const mongoose = require('mongoose');
 const createError = require('http-errors');
 const debug = require('debug')('givegood:user');
 
+mongoose.Promise = Promise;
+
 const Schema = mongoose.Schema;
 
 const userSchema = Schema({
