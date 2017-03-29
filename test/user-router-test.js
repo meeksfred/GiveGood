@@ -151,7 +151,7 @@ describe('testing user-router', function() {
         request.post(`${url}/api/signup`)
         .send({
           username: exampleUser.username,
-          password: 'help',
+          password: 'test',
           email: exampleUser.email,
         })
         .end((err, res) => {
