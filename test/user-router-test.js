@@ -161,6 +161,23 @@ describe('testing user-router', function() {
         });
       });
     });
-    
+  });
+
+  describe('testing GET /api/login', function() {
+
+    describe('with a valid login/authorization', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return a token and 200 status', (done) => {
+        request.get(`${url}/api/login`)
+        .auth(this.tempUser.username, this.tempPassword)
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          done();
+        });
+      });
+    });
+
   });
 });
