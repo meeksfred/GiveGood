@@ -9,6 +9,8 @@ module.exports = {
     path: require('path').resolve('build'),
   },
   plugins: [
-    new HTMLPlugin(),
+    new HTMLPlugin({
+      template: `${__dirname}/app/index.html`,
+    }),
   ],
 };
