@@ -21,6 +21,9 @@ userRouter.post('/api/signup', jsonParser, (req, res, next) => {
   if(!password)
     return next(createError(400, 'requires password'));
 
+  if(req.body.username < 3)
+    return next(createError(400, 'username must be at least 3 characters'));
+
   if(password.length < 7)
     return next(createError(400, 'password must be at least 7 characters'));
 

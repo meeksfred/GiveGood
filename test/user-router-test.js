@@ -18,9 +18,6 @@ mongoose.Promise = Promise;
 const server = require('../server.js');
 const url = `http://localhost:${process.env.PORT}`;
 
-
-// MAKE SURE TO MAKE A DB DELETE OPERATION ****************
-
 const exampleUser = {
   username: 'helloWorld',
   password: 'password',
@@ -144,9 +141,27 @@ describe('testing user-router', function() {
       });
     });
 
+    describe('with username < 3 characters', function() {
+
+      it('should return a 400 error, bad request/username too short', (done) => {
+
+        request.post(`${url}/api/signup`)
+        .send({
+          username: 'no',
+          password: exampleUser.password,
+          email: exampleUser.email,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          console.log(res);
+          done();
+        });
+      });
+    });
+
     describe('with password < 7 characters', function() {
 
-      it('should return a 400 error, bad request', (done) => {
+      it('should return a 400 error, bad request/password too short', (done) => {
 
         request.post(`${url}/api/signup`)
         .send({
@@ -157,6 +172,23 @@ describe('testing user-router', function() {
         .end((err, res) => {
           expect(res.status).to.equal(400);
           expect(res.text).to.equal('BadRequestError');
+          done();
+        });
+      });
+    });
+
+    describe('with invalid endpoint', function() {
+
+      it('should return a 404 error, endpoint not found', (done) => {
+
+        request.post(`${url}/api/badsignup`)
+        .send({
+          username: exampleUser.username,
+          password: exampleUser.password,
+          email: exampleUser.email,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
           done();
         });
       });
@@ -179,5 +211,50 @@ describe('testing user-router', function() {
       });
     });
 
+    describe('with invalid username', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return a 401 status, unauthorized', (done) => {
+        request.get(`${url}/api/login`)
+        .auth('notusername', this.tempPassword)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.text).to.equal('UnauthorizedError');
+          done();
+        });
+      });
+    });
+
+    describe('with invalid password', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return a 401 status, unauthorized', (done) => {
+        request.get(`${url}/api/login`)
+        .auth(this.tempUser.username, 'notpassword')
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.text).to.equal('UnauthorizedError');
+          done();
+        });
+      });
+    });
+
+    describe('with invalid endpoint', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return a 404 status, endpoint not found', (done) => {
+        request.get(`${url}/api/notlogin`)
+        .auth(this.tempUser.username, this.tempPassword)
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
   });
+
+  // describe()
 });
