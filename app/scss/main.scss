@@ -1,7 +1,9 @@
-@import "~font-awesome/scss/font-awesome.scss"; // ~ here refers to node_modules directory. the '/' after isn't needed
+@import "theme";
+@import "custom-bootstrap";
 
 $app-bg: #ff7a7a;
 
 body {
-  background-color: $app-bg;
+  background-color: $app-primary;
+  color: $gray;
 }

@@ -38,6 +38,8 @@
     "bcrypt": "^1.0.2",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
+    "bootstrap-sass": "^3.3.7",
+    "bootstrap-social": "^5.1.1",
     "camelcase": "^4.1.0",
     "clean-webpack-plugin": "^0.1.16",
     "cors": "^2.8.1",
