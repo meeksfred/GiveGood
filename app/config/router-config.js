@@ -12,7 +12,7 @@ function routerConfig($stateProvider, $urlRouterProvider) {
       url: '/landing',
       controllerAs: 'landingCtrl',
       controller: 'LandingController',
-      template: require('./view/landing/landing.html'),
+      template: require('../view/landing/landing.html'),
     },
   ];
 

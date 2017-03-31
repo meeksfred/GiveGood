@@ -1,0 +1,33 @@
+<div id="loginContainer">
+  <form
+    id="loginForm"
+    name="loginForm"
+    ng-submit="loginCtrl.login()"
+    novalidate>
+
+    <div>
+      <input
+        required
+        type='text'
+        name="username"
+        class="form-control"
+        ng-model="loginCtrl.user.username"
+        placeholder="Username">
+    </div>
+
+    <div>
+      <input
+        required
+        type='text'
+        name="password"
+        class="form-control"
+        ng-model="loginCtrl.user.password"
+        placeholder="Password">
+    </div>
+
+    <div>
+      <input type="submit" class="btn-default" value="Login">
+    </div>
+
+  </form>
+</div>
