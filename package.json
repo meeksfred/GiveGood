@@ -6,6 +6,7 @@
   "scripts": {
     "build": "./node_modules/webpack/bin/webpack.js",
     "watch": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot",
+    "build-watch": "./node_modules/webpack/bin/webpack.js -w",
     "start": "node server.js",
     "start-debug": "DEBUG='givegood*' npm start",
     "start-watch": "DEBUG='givegood*' ./node_modules/nodemon/bin/nodemon.js server.js",
