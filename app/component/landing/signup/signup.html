@@ -1,0 +1,43 @@
+<div id="signupContainer">
+  <form
+    id="signupForm"
+    name="signupForm"
+    ng-submit="signupCtrl.signup()"
+    novalidate>
+
+    <div>
+      <input
+        required
+        type='text'
+        name="username"
+        class="form-control"
+        ng-model="signupCtrl.user.username"
+        placeholder="Username">
+    </div>
+
+    <div>
+      <input
+        required
+        type='text'
+        name="email"
+        class="form-control"
+        ng-model="signupCtrl.user.email"
+        placeholder="Email">
+    </div>
+
+    <div>
+      <input
+        required
+        type='text'
+        name="password"
+        class="form-control"
+        ng-model="signupCtrl.user.password"
+        placeholder="Password">
+    </div>
+
+    <div>
+      <input type="submit" class="btn-default" value="Signup">
+    </div>
+
+  </form>
+</div>
