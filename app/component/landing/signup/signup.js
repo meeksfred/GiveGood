@@ -14,7 +14,7 @@ function SignupController($log, $location, authService) {
   this.signup = function(user) {
     authService.signup(user)
     .then( () => {
-      $location.path('/home');
+      $location.url('/home');
     })
     .catch( () => {
       $log.debug('signup failed');

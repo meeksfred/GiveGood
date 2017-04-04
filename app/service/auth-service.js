@@ -58,9 +58,26 @@ function authService($q, $log, $http, $window) {
   };
 
   service.login = function(user) {
-    $log.debug('service.login()');
+    $log.debug('authService.login()');
+    let url = `${__API_URL__}/api/login`;
+    let base64 = $window.btoa(`${user.username}:${user.password}`);
 
+    let config = {
+      headers: {
+        Accept: 'application/json',
+        authorization: `Basic ${base64}`,
+      },
+    };
 
+    return $http.get(url, config)
+    .then( res => {
+      $log.debug('success', res.data);
+      return service.setToken(res.data);
+    })
+    .catch( err => {
+      $log.error(err.message);
+      $q.reject(err);
+    });
   };
 
   return service;
