@@ -6,4 +6,6 @@ module.exports = ['$log', LandingController];
 
 function LandingController($log) {
   $log.debug('init landingCtrl');
+
+  this.loginToggle = true;
 }

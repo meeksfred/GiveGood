@@ -1,6 +1,15 @@
 <main class="landing">
-  
-  <login></login>
-  <signup></signup>
+
+  <login ng-if="landingCtrl.loginToggle"></login>
+  <signup ng-if="!landingCtrl.loginToggle"></signup>
+
+  <button ng-if="landingCtrl.loginToggle"
+    ng-click="landingCtrl.loginToggle = !landingCtrl.loginToggle"
+    class="btn-primary">
+    Not a member? Signup! </button>
+  <button ng-if="!landingCtrl.loginToggle"
+    ng-click="landingCtrl.loginToggle = !landingCtrl.loginToggle"
+    class="btn-primary">
+    Already a member? Login! </button>
 
 </main>
