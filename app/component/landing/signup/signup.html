@@ -2,7 +2,7 @@
   <form
     id="signupForm"
     name="signupForm"
-    ng-submit="signupCtrl.signup()"
+    ng-submit="signupCtrl.signup(signupCtrl.user)"
     novalidate>
 
     <div>
@@ -28,7 +28,7 @@
     <div>
       <input
         required
-        type='text'
+        type='password'
         name="password"
         class="form-control"
         ng-model="signupCtrl.user.password"
@@ -36,7 +36,7 @@
     </div>
 
     <div>
-      <input type="submit" class="btn-default" value="Signup">
+      <input type="submit" class="btn btn-default" value="Signup">
     </div>
 
   </form>
