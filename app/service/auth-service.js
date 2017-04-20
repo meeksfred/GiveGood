@@ -65,7 +65,7 @@ function authService($q, $log, $http, $window) {
     let config = {
       headers: {
         Accept: 'application/json',
-        authorization: `Basic ${base64}`,
+        Authorization: `Basic ${base64}`,
       },
     };
 
@@ -77,6 +77,23 @@ function authService($q, $log, $http, $window) {
     .catch( err => {
       $log.error(err.message);
       $q.reject(err);
+    });
+  };
+
+  service.deleteAccount = function(user) {
+    $log.debug('authService.deleteAccount()');
+
+    return service.getToken()
+    .then( token => {
+      let url = `${__API_URL__}/api/deleteAccount/${user._id}`;
+      let config = {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      return $http.delete(url, config);
     });
   };
 
