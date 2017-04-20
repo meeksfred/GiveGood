@@ -256,5 +256,78 @@ describe('testing user-router', function() {
     });
   });
 
-  // describe()
+  describe('testing DELETE /api/user/deleteAccount', function() {
+
+    describe('with valid user credentials', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return a 204 status, successful deletion', (done) => {
+        request.delete(`${url}/api/deleteAccount/${this.tempUser._id}`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(204);
+          done();
+        });
+      });
+    });
+
+    describe('with bad token request', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return a 400 status, bad request', (done) => {
+        request.delete(`${url}/api/deleteAccount/${this.tempUser._id}`)
+        .set({
+          Authorization: `Bear `,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.text).to.equal('BadRequestError');
+          done();
+        });
+      });
+    });
+
+    describe('with unauthorized request', function() {
+
+      let secondTemp = {};
+      before( done => mockUser.call(this, done));
+      before( done => mockUser.call(secondTemp, done));
+
+      it('should return a 401 status, unauthorized request', (done) => {
+        request.delete(`${url}/api/deleteAccount/${this.tempUser._id}`)
+        .set({
+          Authorization: `Bearer ${secondTemp.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.text).to.equal('UnauthorizedError');
+          done();
+        });
+      });
+    });
+
+    describe('with invalid endpoint/user not found', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return a 404 status, not found', (done) => {
+        request.delete(`${url}/api/deleteAccount/thisisfake`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.text).to.equal('NotFoundError');
+          done();
+        });
+      });
+    });
+  });
+
+  // describe()...
 });

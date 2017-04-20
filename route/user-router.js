@@ -44,3 +44,19 @@ userRouter.get('/api/login', basicAuth, (req, res, next) => {
   .then( token => res.send(token))
   .catch(next);
 });
+
+userRouter.delete('/api/deleteAccount/:userID', bearerAuth, (req, res, next) => {
+  debug('hit route DELETE /api/user/deleteAccount/:userID');
+
+  User.findById(req.params.userID)
+  .catch( err => Promise.reject(createError(404, err.message)))
+  .then( user => {
+    if(user.id.toString() !== req.user._id.toString()) {
+      return Promise.reject(createError(401, 'unauthorized'));
+    }
+    return User.findByIdAndRemove(req.params.userID);
+  })
+  .catch( err => Promise.reject(err, err.message))
+  .then( () => res.sendStatus(204))
+  .catch(next);
+});
