@@ -80,6 +80,8 @@ function authService($q, $log, $http, $window) {
     });
   };
 
+  // service.getUser = function
+
   service.deleteAccount = function(user) {
     $log.debug('authService.deleteAccount()');
 

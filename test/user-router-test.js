@@ -256,7 +256,34 @@ describe('testing user-router', function() {
     });
   });
 
-  describe('testing DELETE /api/user/deleteAccount', function() {
+  // NEED TO MAKE A DIFFERENT MODEL, ie.. PROFILE or ACCOUNT (something separate from USER because I don't want to be returning to the client the password and findHASH, Bad bad bad).
+
+  // describe('testing GET /api/user', function() {
+  //
+  //   describe('with a valid request', function() {
+  //
+  //     before( done => mockUser.call(this, done));
+  //
+  //     it('should return with a 200 status, and user data', (done) => {
+  //       request.get(`${url}/api/user`)
+  //       .set({
+  //         Authorization: `Bearer ${this.tempToken}`,
+  //       })
+  //       .end((err, res) => {
+  //         if (err) return done(err);
+  //         console.log(res.body, 'res.body');
+  //         expect(res.status).to.equal(200);
+  //         expect(res.body.username).to.equal(this.tempUser.username);
+  //         expect(res.body.email).to.equal(this.tempUser.email);
+  //         done();
+  //       });
+  //     });
+  //   });
+  //
+  //
+  // });
+
+  describe('testing DELETE /api/deleteAccount', function() {
 
     describe('with valid user credentials', function() {
 

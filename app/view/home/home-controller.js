@@ -11,6 +11,8 @@ function HomeController($log, $location, authService) {
 
   // once I have user data within the home view, setup a simple dropdown or button for now to make sure deleting a user account works. send the view back to landing on successful deletion.
 
+  // I won't be grabbing user information from the 'User' or authService because I don't want to expose the password and passwordHash to the client.
+
   this.logout = function() {
     $log.debug('homeCtrl.logout()');
     authService.logout()
