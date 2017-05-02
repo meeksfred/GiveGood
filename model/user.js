@@ -18,19 +18,9 @@ const userSchema = Schema({
   password: {type: String},
   findHash: {type: String, unique: true},
   created: {type: Date, required: true, default: Date.now()},
-  firstName: {type: String},
-  lastName: {type: String},
-  currentLikes: {type: Number},
-  likeRate: {type: Number},
-  // charities: [{}] Need to figure out where database of charities/non-profits is coming from first.
-  lastDonation: {type: String},
-  pastDonation: {
-    amount: {type: Number},
-    organization: {type: String},
-  },
-  // Still need all social media profile objects, as well as PayPal customer info.
-
 });
+
+// Still need all OAuth data, as well as Paypal information stored here.
 
 userSchema.methods.generatePasswordHash = function(password) {
   debug('generatePasswordHash');
