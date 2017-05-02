@@ -29,6 +29,7 @@ app.use(cors());
 app.use(morgan('dev'));
 
 // app routes
+app.use(express.static(`${__dirname}/build`));
 app.use(userRouter);
 app.use(profileRouter);
 app.use(errorMiddleware);

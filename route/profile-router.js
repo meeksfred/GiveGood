@@ -2,7 +2,7 @@
 
 const Router = require('express').Router;
 const debug = require('debug')('givegood:profile-router');
-const jsonParser = require('body-parser');
+const jsonParser = require('body-parser').json();
 const createError = require('http-errors');
 
 const User = require('../model/user.js');
