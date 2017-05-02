@@ -10,6 +10,7 @@ const debug = require('debug')('givegood:server');
 const dotenv = require('dotenv');
 
 const userRouter = require('./route/user-router.js');
+const profileRouter = require('./route/profile-router.js');
 
 const errorMiddleware = require('./lib/error-middleware.js');
 
@@ -29,6 +30,7 @@ app.use(morgan('dev'));
 
 // app routes
 app.use(userRouter);
+app.use(profileRouter);
 app.use(errorMiddleware);
 
 // start server
