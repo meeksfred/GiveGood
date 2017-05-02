@@ -48,12 +48,14 @@ describe('testing profile-router', function() {
         })
         .end((err, res) => {
           if (err) return done(err);
+          console.log(res.body, 'res.body');
           expect(res.status).to.equal(200);
           expect(res.body.firstName).to.equal(exampleProfile.firstName);
           expect(res.body.lastName).to.equal(exampleProfile.lastName);
           expect(res.body.email).to.equal(this.tempUser.email);
           expect(res.body.username).to.equal(this.tempUser.username);
           expect(res.body.phone).to.equal(exampleProfile.phone);
+          expect(res.body.userID).to.equal(this.tempUser._id.toString());
           done();
         });
       });
