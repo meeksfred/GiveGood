@@ -20,10 +20,12 @@ const url = `http://localhost:${process.env.PORT}`;
 const exampleProfile = {
   firstName: 'Scout',
   lastName: 'Test',
-  email: 'test@test.com',
+  // email: 'test@test.com',
   phone: '(111)111-1111',
-  username: 'scouttest',
+  // username: 'scouttest',
 };
+
+// username and email are provided/attached by accessing User model in route.
 
 describe('testing profile-router', function() {
 
@@ -61,6 +63,148 @@ describe('testing profile-router', function() {
       });
     });
 
+    describe('with no firstName', function() {
 
+      before( done => mockUser.call(this, done));
+
+      it('should return an error, status 400', (done) => {
+
+        request.post(`${url}/api/profile`)
+        .send({
+          lastName: 'Test',
+          phone: '(111)111-1111',
+        })
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.text).to.equal('BadRequestError');
+          done();
+        });
+      });
+    });
+
+    describe('with no lastName', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return an error, status 400', (done) => {
+
+        request.post(`${url}/api/profile`)
+        .send({
+          firstName: 'Scout',
+          phone: '(111)111-1111',
+        })
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.text).to.equal('BadRequestError');
+          done();
+        });
+      });
+    });
+
+    describe('with no phone', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return an error, status 400', (done) => {
+
+        request.post(`${url}/api/profile`)
+        .send({
+          firstName: 'Scout',
+          lastName: 'Test',
+        })
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.text).to.equal('BadRequestError');
+          done();
+        });
+      });
+    });
+
+    describe('with invalid date-string', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return an error, status 400', (done) => {
+
+        request.post(`${url}/api/profile`)
+        .send({
+          firstName: 'Scout',
+          lastName: 'Test',
+          phone: '(111)111-1111',
+          created: 'today',
+        })
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+    });
+
+    describe('with no Auth', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return an error, status 400', (done) => {
+
+        request.post(`${url}/api/profile`)
+        .send(exampleProfile)
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.text).to.equal('BadRequestError');
+          done();
+        });
+      });
+    });
+
+    describe('with Bearer heading but no token', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return an error, status 400', (done) => {
+
+        request.post(`${url}/api/profile`)
+        .send(exampleProfile)
+        .set({
+          Authorization: `Bearer `,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.text).to.equal('BadRequestError');
+          done();
+        });
+      });
+    });
+
+    describe('with endpoint that doesnt exist', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return an error, status 404', (done) => {
+
+        request.post(`${url}/api/userProfile`)
+        .send(exampleProfile)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+
+    // describe('')
   });
 });
