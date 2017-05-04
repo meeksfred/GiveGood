@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 const serverCtrl = require('./lib/server-control.js');
 const cleanDB = require('./lib/clean-db.js');
 const mockUser = require('./lib/user-mock.js');
+const mockProfile = require('./lib/profile-mock.js');
 
 mongoose.Promise = Promise;
 
@@ -20,9 +21,9 @@ const url = `http://localhost:${process.env.PORT}`;
 const exampleProfile = {
   firstName: 'Scout',
   lastName: 'Test',
-  // email: 'test@test.com',
+  email: 'test@test.com',
   phone: '(111)111-1111',
-  // username: 'scouttest',
+  username: 'scouttest',
 };
 
 // username and email are provided/attached by accessing User model in route.
@@ -205,6 +206,86 @@ describe('testing profile-router', function() {
       });
     });
 
-    // describe('')
+    describe('with a username that already exists', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return an error, status 409', (done) => {
+
+        request.post(`${url}/api/profile`)
+        .send({
+          firstName: exampleProfile.firstName,
+          lastName: exampleProfile.lastName,
+          email: exampleProfile.email,
+          phone: exampleProfile.phone,
+          username: this.tempProfile.username,
+        })
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(409);
+          done();
+        });
+      });
+    });
+
+    // Why is the email the one that always gets flagged for duplicates.
+
+    describe('with an email that already exists', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return an error, status 409', (done) => {
+
+        request.post(`${url}/api/profile`)
+        .send({
+          firstName: exampleProfile.firstName,
+          lastName: exampleProfile.lastName,
+          email: this.tempProfile.email,
+          phone: exampleProfile.phone,
+          username: exampleProfile.username,
+        })
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(409);
+          console.log(exampleProfile.email, 'ex email');
+          console.log(this.tempProfile.email, 'lorem email');
+          console.log(res.text, 'res.text');
+          done();
+        });
+      });
+    });
+
+    describe('with a phone number that already exists', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return an error, status 409', (done) => {
+
+        request.post(`${url}/api/profile`)
+        .send({
+          firstName: exampleProfile.firstName,
+          lastName: exampleProfile.lastName,
+          email: exampleProfile.email,
+          phone: this.tempProfile.phone,
+          username: exampleProfile.username,
+        })
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(409);
+          console.log(exampleProfile.email, 'ex email');
+          console.log(this.tempProfile.email, 'lorem email');
+          console.log(res.text, 'res.text');
+          done();
+        });
+      });
+    });
+
+
   });
 });

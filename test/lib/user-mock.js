@@ -7,9 +7,9 @@ const lorem = require('lorem-ipsum');
 module.exports = function(done) {
   debug('create mock user');
 
-  let username = lorem({count: 2, units: 'word'}).split('').join('-');
-  let password = lorem({count: 2, units: 'word'}).split('').join('-');
-  let email = lorem({count: 2, units: 'word'}).split('').join('-');
+  let username = lorem({count: 2, units: 'word'}).split(' ').join('-');
+  let password = lorem({count: 2, units: 'word'}).split(' ').join('-');
+  let email = lorem({count: 2, units: 'word'}).split(' ').join('-');
 
   let exampleUser = {
     username,
