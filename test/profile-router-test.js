@@ -38,7 +38,7 @@ describe('testing profile-router', function() {
 
   describe('testing POST /api/profile', function() {
 
-    describe('with a valid body', function() {
+    describe('with a valid request', function() {
 
       before( done => mockUser.call(this, done));
 
@@ -51,7 +51,6 @@ describe('testing profile-router', function() {
         })
         .end((err, res) => {
           if (err) return done(err);
-          console.log(res.body, 'res.body');
           expect(res.status).to.equal(200);
           expect(res.body.firstName).to.equal(exampleProfile.firstName);
           expect(res.body.lastName).to.equal(exampleProfile.lastName);
@@ -279,5 +278,97 @@ describe('testing profile-router', function() {
     });
   });
 
-  // describe()
+  describe('testing GET /api/profile/me', function() {
+
+    describe('with a valid request', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return a profile', (done) => {
+
+        request.get(`${url}/api/profile/me`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.firstName).to.equal(this.tempProfile.firstName);
+          expect(res.body.lastName).to.equal(this.tempProfile.lastName);
+          expect(res.body.email).to.equal(this.tempProfile.email);
+          expect(res.body.username).to.equal(this.tempProfile.username);
+          expect(res.body.phone).to.equal(this.tempProfile.phone);
+          done();
+        });
+      });
+    });
+
+    describe('with no Auth header', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return an error, status 400', (done) => {
+
+        request.get(`${url}/api/profile/me`)
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.text).to.equal('BadRequestError');
+          done();
+        });
+      });
+    });
+
+    describe('with Bearer header but no token', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return an error, status 400', (done) => {
+
+        request.get(`${url}/api/profile/me`)
+        .set({
+          Authorization: `Bearer `,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.text).to.equal('BadRequestError');
+          done();
+        });
+      });
+    });
+
+    describe('with incorrect endpoint', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return an error, status 404 endpoint not found', (done) => {
+
+        request.get(`${url}/api/profile/notme`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+
+    describe('when a user doesn\'t have a profile yet', function() {
+
+      before( done => mockUser.call(this, done));
+
+      it('should return an error, status 404 profile not found', (done) => {
+
+        request.get(`${url}/api/profile/me`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.text).to.equal('NotFoundError');
+          done();
+        });
+      });
+    });
+  });
 });

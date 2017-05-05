@@ -31,7 +31,7 @@ profileRouter.get('/api/profile/me', bearerAuth, (req, res, next) => {
 
   Profile.findOne({userID: req.user._id})
   .then( profile => {
-    if (!profile) return Promise.reject(createError(404, 'You haven\t created a profile yet!'));
+    if (!profile) return Promise.reject(createError(404, 'User hasn\'t created a profile yet'));
     res.json(profile);
   })
   .catch(next);
