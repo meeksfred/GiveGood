@@ -371,4 +371,38 @@ describe('testing profile-router', function() {
       });
     });
   });
+
+  describe('testing PUT /api/profile/:profileID', function() {
+
+    describe('updating username and email for Profile and User', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return an updated profile', (done) => {
+        let updateData = {
+          username: 'helloWorld',
+          email: 'bob@bob.com',
+        };
+
+        request.put(`${url}/api/profile/${this.tempProfile._id}`)
+        .send(updateData)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          console.log('tempUser email', this.tempUser.email);
+          console.log('res.body.email', res.body.email);
+          console.log('tempUser username', this.tempUser.username);
+          console.log('res.body.username', res.body.username);
+          expect(res.body.username).to.equal(updateData.username && this.tempUser.username);
+          expect(res.body.email).to.equal(updateData.email && this.tempUser.email);
+          done();
+        });
+      });
+    });
+
+
+  });
 });
