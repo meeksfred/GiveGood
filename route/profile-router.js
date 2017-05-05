@@ -36,3 +36,18 @@ profileRouter.get('/api/profile/me', bearerAuth, (req, res, next) => {
   })
   .catch(next);
 });
+
+profileRouter.put('/api/profile/:profileID', bearerAuth, jsonParser, (req, res, next) => {
+  debug('hit route PUT /api/profile/:profileID');
+
+  Profile.findById(req.params.profileID)
+  .catch( err => Promise.reject(createError(404, err.message)))
+  .then( profile => {
+    if ( profile.userID.toString() !== req.user._id.toString()) {
+      return Promise.reject(createError(401, 'unauthorized user'));
+    }
+    return Profile.findByIdandUpdate(req.params.profileID, req.body, {new: true, runValidators: true});
+  })
+  .then( profile => res.json(profile))
+  .catch(next);
+});
