@@ -15,9 +15,9 @@ module.exports = function(done) {
 
   userMock.call(this, err => {
     if(err) return done(err);
-    exampleProfile.email = this.tempUser.email;
-    exampleProfile.username = this.tempUser.username;
     exampleProfile.userID = this.tempUser._id.toString();
+    exampleProfile.username = this.tempUser.username;
+    exampleProfile.email = this.tempUser.email;
     new Profile(exampleProfile).save()
     .then( profile => {
       this.tempProfile = profile;

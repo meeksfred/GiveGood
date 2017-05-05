@@ -45,19 +45,6 @@ userRouter.get('/api/login', basicAuth, (req, res, next) => {
   .catch(next);
 });
 
-// This route will be changed, and be moved to the new model.
-
-// userRouter.get('/api/user', bearerAuth, (req, res, next) => {
-//   debug('hit route GET /api/user');
-//
-//   User.findById(req.user._id)
-//   .catch( err => Promise.reject(createError(404, err.message)))
-//   .then( user => res.json(user))
-//   .catch(next);
-// });
-
-
-// Will need to rework this route a little bit because it will have to delete information from a new 'Profile' or 'Account' model.
 userRouter.delete('/api/deleteAccount/:userID', bearerAuth, (req, res, next) => {
   debug('hit route DELETE /api/deleteAccount/:userID');
 

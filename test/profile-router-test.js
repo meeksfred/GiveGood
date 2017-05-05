@@ -230,8 +230,6 @@ describe('testing profile-router', function() {
       });
     });
 
-    // Why is the email the one that always gets flagged for duplicates.
-
     describe('with an email that already exists', function() {
 
       before( done => mockProfile.call(this, done));
@@ -251,9 +249,6 @@ describe('testing profile-router', function() {
         })
         .end((err, res) => {
           expect(res.status).to.equal(409);
-          console.log(exampleProfile.email, 'ex email');
-          console.log(this.tempProfile.email, 'lorem email');
-          console.log(res.text, 'res.text');
           done();
         });
       });
@@ -278,14 +273,11 @@ describe('testing profile-router', function() {
         })
         .end((err, res) => {
           expect(res.status).to.equal(409);
-          console.log(exampleProfile.email, 'ex email');
-          console.log(this.tempProfile.email, 'lorem email');
-          console.log(res.text, 'res.text');
           done();
         });
       });
     });
-
-
   });
+
+  // describe()
 });
