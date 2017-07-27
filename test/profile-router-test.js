@@ -554,6 +554,80 @@ describe('testing profile-router', function() {
         });
       });
     });
+  });
+
+  describe('testing DELETE /api/profile/:profileID', function() {
+
+    describe('deleting a profile', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return a 204 status, successful deletion', (done) => {
+
+        request.delete(`${url}/api/profile/${this.tempProfile._id}`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(204);
+          done();
+        });
+      });
+    });
+
+    describe('with valid token and invalid id', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return a 404, profile not found', (done) => {
+
+        request.delete(`${url}/api/profile/:profileID`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+
+    describe('with bad token request and valid id', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return a 400, bad request', (done) => {
+
+        request.delete(`${url}/api/profile/${this.tempProfile._id}`)
+        .set({
+          Authorization: `Bearer `,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+    });
+
+    describe('with wrong token', function() {
+      let tempSecondUser = {};
+
+      before( done => mockProfile.call(this, done));
+      before( done => mockUser.call(tempSecondUser, done));
+
+      it('should return a 401 for unauthorized user', (done) => {
+
+        request.delete(`${url}/api/profile/${this.tempProfile._id}`)
+        .set({
+          Authorization: `Bearer ${tempSecondUser.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      });
+    });
 
 
   });

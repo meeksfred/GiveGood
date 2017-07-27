@@ -44,7 +44,7 @@ profileRouter.put('/api/profile/:profileID', bearerAuth, jsonParser, (req, res, 
   Profile.findById(req.params.profileID)
   .catch( err => Promise.reject(createError(404, err.message)))
   .then( profile => {
-    if ( profile.userID.toString() !== req.user._id.toString()) {
+    if (profile.userID.toString() !== req.user._id.toString()) {
       return Promise.reject(createError(401, 'unauthorized user'));
     }
     if (req.body.username && req.body.email) {
@@ -60,5 +60,20 @@ profileRouter.put('/api/profile/:profileID', bearerAuth, jsonParser, (req, res, 
     return Profile.findByIdAndUpdate(req.params.profileID, req.body, {new: true, runValidators: true});
   })
   .then( profile => res.json(profile))
+  .catch(next);
+});
+
+profileRouter.delete('/api/profile/:profileID', bearerAuth, (req, res, next) => {
+  debug('hit route DELETE /api/profile/:profileID');
+
+  Profile.findById(req.params.profileID)
+  .catch( err => Promise.reject(createError(404, err.message)))
+  .then( profile => {
+    if (profile.userID.toString() !== req.user._id.toString()) {
+      return Promise.reject(createError(401, 'unauthorized user'));
+    }
+    return Profile.findByIdAndRemove(req.params.profileID);
+  })
+  .then( () => res.sendStatus(204))
   .catch(next);
 });
