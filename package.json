@@ -12,7 +12,7 @@
     "start-watch": "DEBUG='givegood*' ./node_modules/nodemon/bin/nodemon.js server.js",
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "test-debug": "DEBUG='givegood*' ./node_modules/mocha/bin/_mocha",
-    "backend-test": "./node_modules/mocha/bin/_mocha",
+    "backend-test": "./node_modules/mocha/bin/mocha",
     "test": "npm run backend-test",
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "db-start": "mongod --dbpath=db"
