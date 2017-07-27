@@ -18,7 +18,9 @@ dotenv.load({path: `${__dirname}/.env`});
 
 // Connect to MongoDB
 mongoose.Promise = Promise;
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI, {
+  useMongoClient: true,
+});
 
 // Module constants
 const PORT = process.env.PORT || 3000;
