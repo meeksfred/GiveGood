@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 const profileSchema = mongoose.Schema({
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
-  email: {type: String, unique: true},
+  email: {type: String, unique: true, required: true},
   phone: {type: String, unique: true, required: true},
-  username: {type: String, unique: true},
+  username: {type: String, unique: true, required: true},
   created: {type: Date, required: true, default: Date.now},
   currentLikes: {type: Number},
   likeRate: {type: Number},

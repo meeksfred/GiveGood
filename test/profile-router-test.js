@@ -392,12 +392,164 @@ describe('testing profile-router', function() {
         .end((err, res) => {
           if (err) return done(err);
           expect(res.status).to.equal(200);
-          console.log('tempUser email', this.tempUser.email);
-          console.log('res.body.email', res.body.email);
-          console.log('tempUser username', this.tempUser.username);
-          console.log('res.body.username', res.body.username);
+          console.log('res.body', res.body);
           expect(res.body.username).to.equal(updateData.username);
           expect(res.body.email).to.equal(updateData.email);
+          done();
+        });
+      });
+    });
+
+    describe('updating only firstName for Profile', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return an updated profile', (done) => {
+        let updateData = {
+          firstName: 'Scout',
+        };
+
+        request.put(`${url}/api/profile/${this.tempProfile._id}`)
+        .send(updateData)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.firstName).to.equal(updateData.firstName);
+          done();
+        });
+      });
+    });
+
+    describe('updating only lastName for Profile', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return an updated profile', (done) => {
+        let updateData = {
+          lastName: 'Scooter',
+        };
+
+        request.put(`${url}/api/profile/${this.tempProfile._id}`)
+        .send(updateData)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.lastName).to.equal(updateData.lastName);
+          done();
+        });
+      });
+    });
+
+    describe('updating only phone number for Profile', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return an updated profile', (done) => {
+        let updateData = {
+          phone: '111-111-1111',
+        };
+
+        request.put(`${url}/api/profile/${this.tempProfile._id}`)
+        .send(updateData)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.phone).to.equal(updateData.phone);
+          done();
+        });
+      });
+    });
+
+    describe('with valid token and invalid Profile id', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return a 404 for profile not found', (done) => {
+        let updateData = {
+          firstName: 'Hello',
+        };
+
+        request.put(`${url}/api/profile/12345`)
+        .send(updateData)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+
+    describe('updated with empty required field', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return a 400 for bad request', (done) => {
+        let updateData = {
+          username: '',
+        };
+
+        request.put(`${url}/api/profile/${this.tempProfile._id}`)
+        .send(updateData)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+    });
+
+    describe('with bad token and valid Profile id', function() {
+
+      before( done => mockProfile.call(this, done));
+
+      it('should return a 400 for bad request', (done) => {
+        let updateData = {
+          firstName: 'Scout',
+        };
+
+        request.put(`${url}/api/profile/${this.tempProfile._id}`)
+        .send(updateData)
+        .set({
+          Authorization: `Bearer `,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+    });
+
+    describe('with wrong token', function() {
+      let tempSecondUser = {};
+
+      before( done => mockProfile.call(this, done));
+      before( done => mockUser.call(tempSecondUser, done));
+
+      it('should return a 401 for unauthorized access', (done) => {
+        let updateData = {
+          firstName: 'Scout',
+        };
+
+        request.put(`${url}/api/profile/${this.tempProfile._id}`)
+        .send(updateData)
+        .set({
+          Authorization: `Bearer ${tempSecondUser.tempToken}`,
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
           done();
         });
       });

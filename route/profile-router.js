@@ -37,6 +37,7 @@ profileRouter.get('/api/profile/me', bearerAuth, (req, res, next) => {
   .catch(next);
 });
 
+// Updates both Profile and associated User models (only username and email for User)
 profileRouter.put('/api/profile/:profileID', bearerAuth, jsonParser, (req, res, next) => {
   debug('hit route PUT /api/profile/:profileID');
 
@@ -46,13 +47,16 @@ profileRouter.put('/api/profile/:profileID', bearerAuth, jsonParser, (req, res, 
     if ( profile.userID.toString() !== req.user._id.toString()) {
       return Promise.reject(createError(401, 'unauthorized user'));
     }
-    let updateData = {
-      username: req.body.username,
-      email: req.body.email,
-    };
-    return User.findByIdAndUpdate(profile.userID, updateData, {new: true, runValidators: true});
+    if (req.body.username && req.body.email) {
+      let updateData = {
+        username: req.body.username,
+        email: req.body.email,
+      };
+      return User.findByIdAndUpdate(profile.userID, updateData, {new: true, runValidators: true});
+    }
   })
-  .then( () => {
+  .then( user => {
+    console.log('USER', user);
     return Profile.findByIdAndUpdate(req.params.profileID, req.body, {new: true, runValidators: true});
   })
   .then( profile => res.json(profile))
