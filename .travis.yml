@@ -11,11 +11,11 @@ addons:
       - gcc-4.8
       - g++-4.8
 env:
-  - CXX=g++-4.8 NODE_ENV=test
+  - CXX=g++-4.8 NODE_ENV=testing
 sudo: required
 before_script:
   - npm i -g eslint mocha
-  - sleep 10
+  - mongod --dbpath db
 script:
   - npm test
   - npm run lint
