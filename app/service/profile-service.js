@@ -76,9 +76,34 @@ function profileService($q, $log, $http, authService) {
       return profile;
     })
     .catch( err => {
-      $log.error(err);
+      $log.error(err.message);
       return $q.reject(err);
     });
   };
 
+  service.deleteProfile = function(profile) {
+    $log.debug('profileService.deleteProfile()');
+
+    return authService.getToken()
+    .then( token => {
+      let url = `${__API_URL__}/api/profile/${profile._id}`;
+      let config = {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      return $http.delete(url, config);
+    })
+    .then( () => {
+      $log.debug('Successfully deleted Profile');
+      return $q.resolve('Success!');
+    })
+    .catch( err => {
+      $log.error(err.message);
+      return $q.reject(err);
+    });
+  };
+
+  return service;
 }
