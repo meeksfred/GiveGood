@@ -13,9 +13,7 @@ addons:
 env:
   - CXX=g++-4.8 NODE_ENV=testing
 sudo: required
-before_script:
-  - npm i -g eslint mocha
-  - mongod --dbpath db
+before_script: npm i -g eslint mocha
 script:
   - npm test
   - npm run lint
