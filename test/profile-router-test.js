@@ -396,8 +396,8 @@ describe('testing profile-router', function() {
           console.log('res.body.email', res.body.email);
           console.log('tempUser username', this.tempUser.username);
           console.log('res.body.username', res.body.username);
-          expect(res.body.username).to.equal(updateData.username && this.tempUser.username);
-          expect(res.body.email).to.equal(updateData.email && this.tempUser.email);
+          expect(res.body.username).to.equal(updateData.username);
+          expect(res.body.email).to.equal(updateData.email);
           done();
         });
       });

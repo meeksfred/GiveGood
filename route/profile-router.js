@@ -46,20 +46,15 @@ profileRouter.put('/api/profile/:profileID', bearerAuth, jsonParser, (req, res, 
     if ( profile.userID.toString() !== req.user._id.toString()) {
       return Promise.reject(createError(401, 'unauthorized user'));
     }
-    return Profile.findByIdAndUpdate(req.params.profileID, req.body, {new: true, runValidators: true});
-  })
-  .then( profile => {
     let updateData = {
-      username: profile.username,
-      email: profile.email,
+      username: req.body.username,
+      email: req.body.email,
     };
-    console.log('do I hit????');
     return User.findByIdAndUpdate(profile.userID, updateData, {new: true, runValidators: true});
-    // NOT UPDATING USER, might not be possible
   })
   .then( () => {
-    Profile.findById(req.params.profileID)
-    .then( profile => res.json(profile));
+    return Profile.findByIdAndUpdate(req.params.profileID, req.body, {new: true, runValidators: true});
   })
+  .then( profile => res.json(profile))
   .catch(next);
 });
