@@ -14,7 +14,6 @@
     "test-debug": "DEBUG='givegood*' ./node_modules/mocha/bin/_mocha",
     "backend-test": "./node_modules/mocha/bin/mocha",
     "test": "npm run backend-test",
-    "lint": "./node_modules/eslint/bin/eslint.js .",
     "db-start": "mongod --dbpath=db"
   },
   "author": "",
@@ -26,6 +25,7 @@
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "ng-file-upload": "^12.2.13",
+    "nodemon": "^1.11.0",
     "validator": "^7.0.0",
     "webpack-dev-server": "^2.4.2"
   },
