@@ -76,7 +76,7 @@ function authService($q, $log, $http, $window) {
     })
     .catch( err => {
       $log.error(err.message);
-      $q.reject(err);
+      return $q.reject(err);
     });
   };
 

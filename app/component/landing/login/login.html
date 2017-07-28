@@ -2,7 +2,7 @@
   <form
     id="loginForm"
     name="loginForm"
-    ng-submit="loginCtrl.login(loginCtrl.user)"
+    ng-submit="loginCtrl.login()"
     novalidate>
 
     <div>
@@ -11,7 +11,15 @@
         type='text'
         name="username"
         class="form-control"
+        uib-tooltip="Username Required"
+        tooltip-placement="bottom-right"
+        tooltip-trigger="'focus'"
         ng-model="loginCtrl.user.username"
+        ng-minlength="3"
+        ng-class="{
+        'has-error': loginForm.username.$invalid,
+        'has-success': loginForm.username.$valid,
+        }"
         placeholder="Username">
     </div>
 
@@ -21,6 +29,14 @@
         type='password'
         name="password"
         class="form-control"
+        uib-tooltip="Password Required"
+        tooltip-placement="bottom-right"
+        tooltip-trigger="'focus'"
+        ng-minlength="7"
+        ng-class="{
+        'has-error': loginForm.password.$invalid,
+        'has-success': loginForm.password.$valid,
+        }"
         ng-model="loginCtrl.user.password"
         placeholder="Password">
     </div>
