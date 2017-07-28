@@ -19,14 +19,6 @@ function HomeController($log, $location, authService, profileService) {
     });
   };
 
-  this.logout = function() {
-    $log.debug('homeCtrl.logout()');
-    authService.logout()
-    .then( () => {
-      $location.url('/');
-    });
-  };
-
   this.checkProfile();
-  
+
 }

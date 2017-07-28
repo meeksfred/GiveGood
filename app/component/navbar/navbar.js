@@ -4,14 +4,14 @@ require('./_navbar.scss');
 
 module.exports = {
   template: require('./navbar.html'),
-  controller: ['$log', '$location', NavbarController],
+  controller: ['$log', '$location', 'authService', NavbarController],
   controllerAs: 'navbarCtrl',
   bindings: {
     profile: '<',
   },
 };
 
-function NavbarController($log, $location) {
+function NavbarController($log, $location, authService) {
   $log.debug('init navbarCtrl');
 
 
@@ -21,5 +21,13 @@ function NavbarController($log, $location) {
 
   this.toHome = function() {
     $location.url('/home');
+  };
+
+  this.logout = function() {
+    $log.debug('homeCtrl.logout()');
+    authService.logout()
+    .then( () => {
+      $location.url('/');
+    });
   };
 }
