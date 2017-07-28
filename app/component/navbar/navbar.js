@@ -14,4 +14,8 @@ function NavbarController($log, $location) {
   this.toProfile = function() {
     $location.url('/profile');
   };
+
+  this.toHome = function() {
+    $location.url('/home');
+  };
 }
