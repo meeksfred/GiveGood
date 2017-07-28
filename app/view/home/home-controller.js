@@ -2,16 +2,22 @@
 
 require('./_home.scss');
 
-module.exports = ['$log', '$location', 'authService', HomeController];
+module.exports = ['$log', '$location', 'authService', 'profileService', HomeController];
 
-function HomeController($log, $location, authService) {
+function HomeController($log, $location, authService, profileService) {
   $log.debug('init homeCtrl');
 
-  this.data; // need to make a GET route for a profile to get data of user on Home view. Not sure I can make a binding from the login/signup components
+  this.profile;
+  this.hasProfile = false;
 
-  // once I have user data within the home view, setup a simple dropdown or button for now to make sure deleting a user account works. send the view back to landing on successful deletion.
-
-  // I won't be grabbing user information from the 'User' or authService because I don't want to expose the password and passwordHash to the client.
+  this.checkProfile = function() {
+    $log.debug('init homeCtrl.checkProfile()');
+    profileService.getProfile()
+    .then( profile => {
+      this.profile = profile;
+      this.hasProfile = true;
+    });
+  };
 
   this.logout = function() {
     $log.debug('homeCtrl.logout()');
@@ -20,4 +26,7 @@ function HomeController($log, $location, authService) {
       $location.url('/');
     });
   };
+
+  this.checkProfile();
+  
 }

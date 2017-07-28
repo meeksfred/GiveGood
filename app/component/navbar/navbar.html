@@ -4,14 +4,18 @@
     <ul class="navMenu">
       <li><a href="" ng-click="navbarCtrl.toHome()">Home</a></li>
       <li><a href="">About</a></li>
+      <li><a href="" ng-hide="!navbarCtrl.profile" ng-click="navbarCtrl.toProfile()">My Profile</a></li>
     </ul>
 
     <div>
       <button
       class="btn btn-nav"
+      ng-hide="navbarCtrl.profile";
       ng-click="navbarCtrl.toProfile()">
       Create a Profile
       </button>
     </div>
+
+    <p ng-hide="!navbarCtrl.profile">Hello, {{navbarCtrl.profile.firstName}}</p>
   </div>
 </nav>
