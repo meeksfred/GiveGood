@@ -11,13 +11,14 @@ module.exports = {
 function LoginController($log, $location, authService) {
   $log.debug('init loginCtrl');
 
-  this.login = function(user) {
-    authService.login(user)
+  this.login = function() {
+    authService.login(this.user)
     .then( () => {
       $location.url('/home');
     })
     .catch( () => {
       $log.debug('login failed');
     });
+
   };
 }

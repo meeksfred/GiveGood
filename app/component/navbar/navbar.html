@@ -1,0 +1,28 @@
+<nav class="navbar">
+  <div class="navbarContainer">
+
+    <div class="btn-right navMenu" uib-dropdown is-open="status.isopen">
+      <button class="btn-right btn-profile" type="button" uib-dropdown-toggle ng-disabled="disabled">
+        Merp
+      </button>
+        <ul class="dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+          <li role="menuitem"><a href="" ng-click="navbarCtrl.toHome()">Home</a></li>
+          <li role="menuitem"><a href="">About</a></li>
+          <li role="menuitem"><a href="" ng-click="navbarCtrl.toProfile()">My Profile</a></li>
+          <li class="divider"></li>
+          <li role="menuitem"><a href="#" ng-click="navbarCtrl.logout()">Logout</a></li>
+        </ul>
+    </div>
+
+    <div>
+      <button
+      class="btn btn-nav"
+      ng-hide="navbarCtrl.profile";
+      ng-click="navbarCtrl.toProfile()">
+      Create a Profile
+      </button>
+    </div>
+
+    <p ng-hide="!navbarCtrl.profile">Hello, {{navbarCtrl.profile.firstName}}</p>
+  </div>
+</nav>

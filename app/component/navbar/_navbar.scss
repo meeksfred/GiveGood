@@ -1,0 +1,17 @@
+@import "theme";
+
+.navbar {
+  border: 2px black solid;
+
+  .navbarContainer {
+    padding: 0 10px;
+
+    .btn-right {
+      float: right;
+      margin-right: 0px;
+      margin-top: 1px;
+      background-color: tranparent;
+      border-radius: 100%;
+    }
+  }
+}

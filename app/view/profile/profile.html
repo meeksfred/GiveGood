@@ -1,0 +1,50 @@
+<main ng-cloak class="profile">
+
+  <navbar profile="profileCtrl.profile"></navbar>
+
+  <div ng-hide="!profileCtrl.hasProfile">
+    <p> {{ profileCtrl.profile.firstName }} </p>
+    <p> {{ profileCtrl.profile.lastName }} </p>
+    <p> {{ profileCtrl.profile.email }} </p>
+    <p> {{ profileCtrl.profile.username }} </p>
+    <p> {{ profileCtrl.profile.phone }} </p>
+  </div>
+
+
+  <div class="profileContainer">
+    <h1> Hello World </h1>
+    <form
+    class="createProfileForm"
+    name="profileForm"
+    novalidate
+    ng-hide="profileCtrl.hasProfile"
+    ng-submit="profileCtrl.createProfile(profileCtrl.profile)">
+      <input
+      type="text"
+      name="firstName"
+      placeholder="First Name"
+      class="form-control"
+      ng-model="profileCtrl.profile.firstName">
+      </input>
+
+      <input
+      type="text"
+      name="lastName"
+      placeholder="Last Name"
+      class="form-control"
+      ng-model="profileCtrl.profile.lastName">
+      </input>
+
+      <input
+      type="text"
+      name="phone"
+      placeholder="Phone"
+      class="form-control"
+      ng-model="profileCtrl.profile.phone">
+      </input>
+
+      <button class="btn">Create Profile</button>
+
+    </form>
+  </div>
+</main>
