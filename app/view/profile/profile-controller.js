@@ -21,7 +21,6 @@ function ProfileController($log, profileService) {
 
   this.checkProfile = function() {
     $log.debug('init profileCtrl.checkProfile()');
-    // if (!this.hasProfile) return;
 
     profileService.getProfile()
     .then( profile => {
