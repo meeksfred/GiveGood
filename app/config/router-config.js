@@ -29,6 +29,8 @@ function routerConfig($stateProvider, $urlRouterProvider) {
     },
   ];
 
+  // Might need a route for viewing the profile of a specific id, ie. /profile/12345
+
   states.forEach(state => {
     $stateProvider.state(state);
   });
