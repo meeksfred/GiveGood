@@ -9,6 +9,7 @@ const User = require('../model/user.js');
 
 const basicAuth = require('../lib/basic-auth-middleware.js');
 const bearerAuth = require('../lib/bearer-auth-middleware.js');
+// const facebookOAUTH = require('../lib/facebook-oauth-middleware.js');
 
 const userRouter = module.exports = Router();
 
@@ -45,6 +46,9 @@ userRouter.get('/api/login', basicAuth, (req, res, next) => {
   .catch(next);
 });
 
+// Find resources on how to get a proper 'Forgot Password' workflow setup.
+// userRouter.put('/api/resetPassword/:userID', bearerAuth, (req, res, next) => {})
+
 userRouter.delete('/api/deleteAccount/:userID', bearerAuth, (req, res, next) => {
   debug('hit route DELETE /api/deleteAccount/:userID');
 
@@ -60,3 +64,5 @@ userRouter.delete('/api/deleteAccount/:userID', bearerAuth, (req, res, next) => 
   .then( () => res.sendStatus(204))
   .catch(next);
 });
+
+// userRouter.get('/api/auth/facebook_oauth_callback', facebookOAUTH, (req, res, next) => {})
