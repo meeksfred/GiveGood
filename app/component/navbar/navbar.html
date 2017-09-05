@@ -3,7 +3,7 @@
 
     <div class="btn-right navMenu" uib-dropdown is-open="status.isopen">
       <button class="btn-right btn-profile" type="button" uib-dropdown-toggle ng-disabled="disabled">
-        Merp
+        {{navbarCtrl.profile.firstName}}
       </button>
         <ul class="dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
           <li role="menuitem"><a href="" ng-click="navbarCtrl.toHome()">Home</a></li>

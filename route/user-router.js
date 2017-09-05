@@ -64,5 +64,3 @@ userRouter.delete('/api/deleteAccount/:userID', bearerAuth, (req, res, next) => 
   .then( () => res.sendStatus(204))
   .catch(next);
 });
-
-// userRouter.get('/api/auth/facebook_oauth_callback', facebookOAUTH, (req, res, next) => {})

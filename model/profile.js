@@ -18,6 +18,13 @@ const profileSchema = mongoose.Schema({
     organization: {type: String},
   }],
   // I want to make the pastDonation property an array with which new donations can be added to. Being able to grab the entire donation history could be useful down the road.
+  facebook: {
+    facebookID: {type: String},
+    accessToken: {type: String},
+    likes: {type: Array},
+    tokenTTL: {type: Number},
+    tokenTimeStamp: {type: Date},
+  },
   userID: {type: mongoose.Schema.Types.ObjectId, required: true},
 });
 

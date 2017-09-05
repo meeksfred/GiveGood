@@ -9,6 +9,7 @@ const User = require('../model/user.js');
 const Profile = require('../model/profile.js');
 
 const bearerAuth = require('../lib/bearer-auth-middleware.js');
+const facebookOAUTH = require('../lib/facebook-oauth-middleware.js');
 
 const profileRouter = module.exports = Router();
 
@@ -76,4 +77,34 @@ profileRouter.delete('/api/profile/:profileID', bearerAuth, (req, res, next) => 
   })
   .then( () => res.sendStatus(204))
   .catch(next);
+});
+
+profileRouter.get('/api/auth/facebook_oauth_callback', facebookOAUTH, (req, res) => {
+  debug('hit route GET /api/auth/facebook_oauth_callback');
+
+  // if (req.facebookError) return res.redirect('/#/home');
+
+  console.log(req.facebookOAUTH, 'made it to route');
+
+  Profile.findOne({ lastName: req.facebookOAUTH.lastName })
+  .then( profile => {
+    console.log(profile, 'PROFILE???');
+    let fbData = {
+      facebook: {
+        facebookID: req.facebookOAUTH.facebookID,
+        accessToken: req.facebookOAUTH.accessToken,
+        likes: req.facebookOAUTH.likes,
+        tokenTTL: req.facebookOAUTH.tokenTTL,
+        tokenTimeStamp: Date.now(),
+      },
+    };
+    return Profile.findByIdAndUpdate(profile.profileID, fbData, {new: true, runValidators: true});
+  })
+  .then( profile => {
+    console.log(profile, 'profileAfter');
+    res.send(profile);
+  })
+  .catch( err => {
+    console.error(err);
+  });
 });

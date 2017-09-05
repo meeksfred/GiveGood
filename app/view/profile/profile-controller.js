@@ -29,6 +29,16 @@ function ProfileController($log, profileService) {
     });
   };
 
+  this.facebookAUTHURL = '';
+
+  let facebookAuthBase = 'https://www.facebook.com/v2.8/dialog/oauth';
+  let facebookClientID = `client_id=${__FACEBOOK_CLIENT_ID__}`;
+  let facebookRedirectURI = `redirect_uri=${__API_URL__}/api/auth/facebook_oauth_callback`;
+  let facebookResponseType = 'response_type=code';
+  let facebookAuthScope = 'scope=public_profile%20email%20user_likes';
+
+  this.facebookAUTHURL = `${facebookAuthBase}?${facebookClientID}&${facebookRedirectURI}&${facebookResponseType}&${facebookAuthScope}`;
+
   this.checkProfile();
 
 }

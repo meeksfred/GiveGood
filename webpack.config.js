@@ -29,6 +29,7 @@ let plugins = [
     __API_URL__: JSON.stringify(process.env.API_URL),
     __TITLE__: JSON.stringify(process.env.TITLE),
     __DEBUG__: JSON.stringify(!production),
+    __FACEBOOK_CLIENT_ID__: JSON.stringify(process.env.FACEBOOK_CLIENT_ID),
   }),
 ];
 
