@@ -36,6 +36,7 @@
     "angular-touch": "^1.6.3",
     "angular-ui-bootstrap": "^2.5.0",
     "angular-ui-router": "^0.4.2",
+    "angularjs-facebook": "^0.2.3",
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
     "babel-preset-es2015": "^6.24.0",
