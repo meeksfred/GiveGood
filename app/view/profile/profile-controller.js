@@ -50,7 +50,6 @@ function ProfileController($log, profileService, facebookService, Facebook) {
   this.getLoginStatus = function() {
     return facebookService.checkLoginStatus()
     .then( response => {
-
       if (response.status === 'connected') {
         this.fbLogged = true;
         console.log('Hello');
