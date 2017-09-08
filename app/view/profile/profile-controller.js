@@ -39,13 +39,13 @@ function ProfileController($log, profileService, facebookService, Facebook) {
   //   }
   // };
 
-  // this.login = function() {
-  //   Facebook.login(function(response) {
-  //     console.log(response, 'Response');
-  //     console.log(response.text, 'Response.text');
-  //     return;
-  //   });
-  // };
+  this.login = function() {
+    Facebook.login(function(response) {
+      console.log(response, 'Response');
+      console.log(response.text, 'Response.text');
+      return;
+    });
+  };
 
   this.getLoginStatus = function() {
     return facebookService.checkLoginStatus()
