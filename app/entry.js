@@ -13,9 +13,14 @@ const ngAnimate = require('angular-animate');
 const uiRouter = require('angular-ui-router');
 const uiBootstrap = require('angular-ui-bootstrap');
 const ngFileUpload = require('ng-file-upload');
+require('angularjs-facebook');
 
 // Create Angular Module
-const app = angular.module('app', [ngTouch, ngAnimate, uiRouter, uiBootstrap, ngFileUpload]);
+const app = angular.module('app', [ngTouch, ngAnimate, uiRouter, uiBootstrap, ngFileUpload, 'facebook']);
+
+app.config(function(FacebookProvider) {
+  FacebookProvider.init(__FACEBOOK_CLIENT_ID__);
+});
 
 // Load Config
 let context = require.context('./config/', true, /.js$/);
