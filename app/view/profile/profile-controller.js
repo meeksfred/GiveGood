@@ -9,8 +9,8 @@ function ProfileController($log, profileService, facebookService, Facebook) {
 
   this.profile;
   this.hasProfile = false;
-  this.fbProfile;
   this.fbLogged = false;
+  this.fbTemp;
 
   this.createProfile = function(profile) {
     $log.debug('init profileCtrl.createProfile()');
@@ -31,19 +31,20 @@ function ProfileController($log, profileService, facebookService, Facebook) {
     });
   };
 
-  // this.intentLogin = function() {
-  //   if ( this.getLoginStatus() ) {
-  //     this.me();
-  //   } else {
-  //     this.login();
-  //   }
-  // };
+  this.intentLogin = function() {
+    // if ( this.fbLogged ) {
+    //   // this.me();
+    // } else {
+    this.login();
+    // }
+  };
 
   this.login = function() {
-    Facebook.login(function(response) {
-      console.log(response, 'Response');
-      console.log(response.text, 'Response.text');
-      return;
+    console.log('login??');
+    return facebookService.login()
+    .then( response => {
+      console.log('fb Temp??');
+      this.fbTemp = response;
     });
   };
 
@@ -57,11 +58,11 @@ function ProfileController($log, profileService, facebookService, Facebook) {
     });
   };
 
-  // this.me = function() {
-  //   Facebook.api('/me', function(response) {
-  //     this.fbProfile = response;
-  //   });
-  // };
+  this.me = function() {
+    Facebook.api('/me', function(response) {
+      this.fbProfile = response;
+    });
+  };
 
   // this.facebookAUTHURL = '';
   //
