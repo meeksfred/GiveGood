@@ -24,7 +24,7 @@ profileRouter.post('/api/profile', bearerAuth, jsonParser, (req, res, next) => {
     return new Profile(req.body).save();
   })
   .then( profile => res.json(profile))
-  .catch(next);
+  .catch( next );
 });
 
 profileRouter.get('/api/profile/me', bearerAuth, (req, res, next) => {
@@ -35,7 +35,7 @@ profileRouter.get('/api/profile/me', bearerAuth, (req, res, next) => {
     if (!profile) return Promise.reject(createError(404, 'User hasn\'t created a profile yet'));
     res.json(profile);
   })
-  .catch(next);
+  .catch( next );
 });
 
 // Updates both Profile and associated User models (only username and email for User)
@@ -61,7 +61,25 @@ profileRouter.put('/api/profile/:profileID', bearerAuth, jsonParser, (req, res, 
     return Profile.findByIdAndUpdate(req.params.profileID, req.body, {new: true, runValidators: true});
   })
   .then( profile => res.json(profile))
-  .catch(next);
+  .catch( next );
+});
+
+profileRouter.put('/api/profile/social/:profileID', bearerAuth, jsonParser, (req, res, next) => {
+  debug('hit route PUT /api/profile/social');
+
+  Profile.findById(req.params.profileID)
+  .catch( err => Promise.reject(createError(404, err.message)))
+  .then( profile => {
+    if (profile.userID.toString() !== req.user._id.toString()) {
+      return Promise.reject(createError(401, 'unauthorized user'));
+    }
+    return Profile.findByIdAndUpdate(req.params.profileID, req.body, {new: true, runValidators: true});
+  })
+  .then( profile => {
+    console.log(profile, 'updated???');
+    res.json(profile);
+  })
+  .catch( next );
 });
 
 profileRouter.delete('/api/profile/:profileID', bearerAuth, (req, res, next) => {
@@ -76,7 +94,7 @@ profileRouter.delete('/api/profile/:profileID', bearerAuth, (req, res, next) => 
     return Profile.findByIdAndRemove(req.params.profileID);
   })
   .then( () => res.sendStatus(204))
-  .catch(next);
+  .catch( next );
 });
 
 profileRouter.get('/api/auth/facebook_oauth_callback', facebookOAUTH, (req, res) => {

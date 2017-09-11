@@ -81,6 +81,32 @@ function profileService($q, $log, $http, authService) {
     });
   };
 
+  service.updateSocialProfile = function(profile, data) {
+    $log.debug('profileService.updateSocialProfile()');
+
+    return authService.getToken()
+    .then( token => {
+      let url = `${__API_URL__}/api/profile/social/${profile._id}`;
+      let config = {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      return $http.put(url, data, config);
+    })
+    .then( res => {
+      console.log(res, 'response??');
+      let profile = res.data;
+      return profile;
+    })
+    .catch( err => {
+      $log.error(err.message);
+      return $q.reject(err);
+    });
+  };
+
   service.deleteProfile = function(profile) {
     $log.debug('profileService.deleteProfile()');
 
