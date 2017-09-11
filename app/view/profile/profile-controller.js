@@ -53,8 +53,29 @@ function ProfileController($log, profileService, facebookService, Facebook) {
     .then( response => {
       if (response.status === 'connected') {
         this.fbLogged = true;
-        console.log('Hello');
+        let fbObj = {
+          facebook: {
+            facebookID: response.authResponse.userID,
+            accessToken: response.authResponse.accessToken,
+            tokenTTL: response.authResponse.expiresIn,
+            tokenTimeStamp: Date.now(),
+          },
+        };
+
+        // this.profile.facebook = fbObj;
+        console.log(this.profile, 'before');
+        console.log(fbObj, 'update object');
+
+
+        return profileService.updateSocialProfile(this.profile, fbObj)
+        .then( profile => {
+          console.log(profile, 'profile???');
+          this.profile = profile;
+        });
       }
+
+      this.fbLogged = false;
+      console.log(response, 'check status response');
     });
   };
 
