@@ -25,5 +25,13 @@ function fbService($q, $log, $http, $window, Facebook) {
     });
   };
 
+  service.getFacebookLikes = function() {
+    return Facebook.api('/me', 'get', {fields: 'likes'}, (response) => {
+      console.log(response, 'api call');
+      console.log(response.likes.data, 'like data?');
+      return $q.resolve(response);
+    });
+  };
+
   return service;
 }

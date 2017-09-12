@@ -11,6 +11,7 @@ function ProfileController($log, profileService, facebookService, Facebook) {
   this.hasProfile = false;
   this.fbLogged = false;
   this.fbTemp;
+  this.fbLikes;
 
   this.createProfile = function(profile) {
     $log.debug('init profileCtrl.createProfile()');
@@ -53,29 +54,41 @@ function ProfileController($log, profileService, facebookService, Facebook) {
     .then( response => {
       if (response.status === 'connected') {
         this.fbLogged = true;
-        let fbObj = {
-          facebook: {
-            facebookID: response.authResponse.userID,
-            accessToken: response.authResponse.accessToken,
-            tokenTTL: response.authResponse.expiresIn,
-            tokenTimeStamp: Date.now(),
-          },
-        };
-
-        // this.profile.facebook = fbObj;
-        console.log(this.profile, 'before');
-        console.log(fbObj, 'update object');
-
-
-        return profileService.updateSocialProfile(this.profile, fbObj)
-        .then( profile => {
-          console.log(profile, 'profile???');
-          this.profile = profile;
-        });
+        this.facebookProfileUpdate(response);
       }
 
       this.fbLogged = false;
       console.log(response, 'check status response');
+    });
+  };
+
+  this.facebookProfileUpdate = function(authObj) {
+    let fbAuthInfo = {
+      facebook: {
+        facebookID: authObj.authResponse.userID,
+        accessToken: authObj.authResponse.accessToken,
+        tokenTTL: authObj.authResponse.expiresIn,
+        tokenTimeStamp: Date.now(),
+      },
+    };
+    return profileService.updateSocialProfile(this.profile, fbAuthInfo)
+    .then( profile => {
+      console.log(profile, 'profile???');
+      this.profile = profile;
+    })
+    .catch( err => {
+      console.error(err);
+    });
+  };
+
+  this.getFacebookLikes = function() {
+    return facebookService.getFacebookLikes()
+    .then( response => {
+      console.log('Hello', response);
+      this.fbLikes = response.likes.data;
+    })
+    .catch( err => {
+      console.error(err);
     });
   };
 
