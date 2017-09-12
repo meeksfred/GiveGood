@@ -11,6 +11,7 @@ const profileSchema = mongoose.Schema({
   created: {type: Date, required: true, default: Date.now},
   currentLikes: {type: Number},
   likeRate: {type: Number},
+  facebookLikes: {type: Array},
   // charities: [{}] Need to figure out where database of charities/non-profits is coming from first.
   // lastDonation: {type: String}, <-- seems redundant.
   pastDonations: [{
@@ -21,7 +22,6 @@ const profileSchema = mongoose.Schema({
   facebook: {
     facebookID: {type: String, default: ''},
     accessToken: {type: String, default: ''},
-    likes: {type: Array},
     tokenTTL: {type: Number, default: 0},
     tokenTimeStamp: {type: Date, default: Date.now},
   },
