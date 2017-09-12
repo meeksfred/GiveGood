@@ -81,7 +81,7 @@ function profileService($q, $log, $http, authService) {
     });
   };
 
-  service.updateSocialProfile = function(profile, data) {
+  service.updateSocialLikes = function(profile, data) {
     $log.debug('profileService.updateSocialProfile()');
 
     return authService.getToken()
@@ -97,9 +97,7 @@ function profileService($q, $log, $http, authService) {
       return $http.put(url, data, config);
     })
     .then( res => {
-      console.log(res, 'response??');
-      let profile = res.data;
-      return profile;
+      return res.data;
     })
     .catch( err => {
       $log.error(err.message);

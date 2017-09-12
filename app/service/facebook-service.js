@@ -9,7 +9,7 @@ function fbService($q, $log, $http, $window, Facebook) {
 
   service.checkLoginStatus = function() {
     return Facebook.getLoginStatus( response => {
-      return $q.resolve(response);
+      return $q.resolve(response); // not tested
     });
   };
 
@@ -22,6 +22,14 @@ function fbService($q, $log, $http, $window, Facebook) {
     }, {
       scope: 'public_profile,email,user_likes',
       return_scopes: true,
+    });
+  };
+
+  service.getFacebookLikes = function() {
+    return Facebook.api('/me', 'get', {fields: 'likes'}, (response) => {
+      console.log(response, 'api call');
+      console.log(response.likes.data, 'like data?');
+      return $q.resolve(response);
     });
   };
 

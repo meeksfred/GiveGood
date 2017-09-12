@@ -18,6 +18,12 @@ const userSchema = Schema({
   password: {type: String},
   findHash: {type: String, unique: true},
   created: {type: Date, required: true, default: Date.now()},
+  facebook: {
+    facebookID: {type: String, default: ''},
+    accessToken: {type: String, default: ''},
+    tokenTTL: {type: Number, default: 0},
+    tokenTimeStamp: {type: Date, default: Date.now},
+  },
 });
 
 // Still need all OAuth data, as well as Paypal information stored here.

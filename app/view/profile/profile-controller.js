@@ -2,9 +2,9 @@
 
 require('./_profile.scss');
 
-module.exports = ['$log', 'profileService', 'facebookService', 'Facebook', ProfileController];
+module.exports = ['$log', 'profileService', 'facebookService', 'authService', 'Facebook', ProfileController];
 
-function ProfileController($log, profileService, facebookService, Facebook) {
+function ProfileController($log, profileService, facebookService, authService, Facebook) {
   $log.debug('init profileCtrl');
 
   this.profile;
@@ -13,7 +13,7 @@ function ProfileController($log, profileService, facebookService, Facebook) {
   this.fbTemp;
 
   this.createProfile = function(profile) {
-    $log.debug('init profileCtrl.createProfile()');
+    $log.debug('hit profileCtrl.createProfile()');
     profileService.createProfile(profile)
     .then( profile => {
       this.profile = profile;
@@ -22,7 +22,7 @@ function ProfileController($log, profileService, facebookService, Facebook) {
   };
 
   this.checkProfile = function() {
-    $log.debug('init profileCtrl.checkProfile()');
+    $log.debug('hit profileCtrl.checkProfile()');
 
     profileService.getProfile()
     .then( profile => {
@@ -35,11 +35,13 @@ function ProfileController($log, profileService, facebookService, Facebook) {
     // if ( this.fbLogged ) {
     //   // this.me();
     // } else {
-    this.login();
+    this.fbLogin();
     // }
   };
 
-  this.login = function() {
+  this.fbLogin = function() {
+    $log.debug('hit login()');
+
     console.log('login??');
     return facebookService.login()
     .then( response => {
@@ -49,11 +51,12 @@ function ProfileController($log, profileService, facebookService, Facebook) {
   };
 
   this.getLoginStatus = function() {
+    $log.debug('hit getLoginStatus()');
+
     return facebookService.checkLoginStatus()
     .then( response => {
       if (response.status === 'connected') {
-        this.fbLogged = true;
-        let fbObj = {
+        let fbAuthInfo = {
           facebook: {
             facebookID: response.authResponse.userID,
             accessToken: response.authResponse.accessToken,
@@ -61,21 +64,64 @@ function ProfileController($log, profileService, facebookService, Facebook) {
             tokenTimeStamp: Date.now(),
           },
         };
-
-        // this.profile.facebook = fbObj;
-        console.log(this.profile, 'before');
-        console.log(fbObj, 'update object');
-
-
-        return profileService.updateSocialProfile(this.profile, fbObj)
-        .then( profile => {
-          console.log(profile, 'profile???');
-          this.profile = profile;
+        return authService.updateSocialUser(fbAuthInfo)
+        .then( response => {
+          console.log(response, 'response?');
+        })
+        .catch( err => {
+          console.error(err);
         });
       }
 
-      this.fbLogged = false;
-      console.log(response, 'check status response');
+      console.log(response.status);
+    });
+  };
+
+  // this.facebookProfileUpdate = function(authObj) {
+  //   $log.debug('hit facebookProfileUpdate()');
+  //
+  //   let fbAuthInfo = {
+  //     facebook: {
+  //       facebookID: authObj.authResponse.userID,
+  //       accessToken: authObj.authResponse.accessToken,
+  //       tokenTTL: authObj.authResponse.expiresIn,
+  //       tokenTimeStamp: Date.now(),
+  //     },
+  //   };
+  //   return authService.updateSocialProfile(fbAuthInfo)
+  //   .then( profile => {
+  //     console.log(profile, 'profile???');
+  //     this.profile = profile;
+  //   })
+  //   .catch( err => {
+  //     console.error(err);
+  //   });
+  // };
+
+  this.facebookLikesUpdate = function(data) {
+    $log.debug('hit facebookLikesUpdate()');
+
+    let fbLikes = {
+      facebookLikes: data.likes.data,
+    };
+    return profileService.updateSocialLikes(this.profile, fbLikes)
+    .then( profile => {
+      console.log(profile, 'profile with likes???');
+      this.profile = profile;
+    })
+    .catch( err => {
+      console.error(err);
+    });
+  };
+
+  this.getFacebookLikes = function() {
+    return facebookService.getFacebookLikes()
+    .then( response => {
+      console.log('Hello', response);
+      this.facebookLikesUpdate(response);
+    })
+    .catch( err => {
+      console.error(err);
     });
   };
 
