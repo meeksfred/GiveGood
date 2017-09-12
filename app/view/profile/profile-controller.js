@@ -2,9 +2,9 @@
 
 require('./_profile.scss');
 
-module.exports = ['$log', 'profileService', 'facebookService', 'Facebook', ProfileController];
+module.exports = ['$log', 'profileService', 'facebookService', 'authService', 'Facebook', ProfileController];
 
-function ProfileController($log, profileService, facebookService, Facebook) {
+function ProfileController($log, profileService, facebookService, authService, Facebook) {
   $log.debug('init profileCtrl');
 
   this.profile;
@@ -56,35 +56,47 @@ function ProfileController($log, profileService, facebookService, Facebook) {
     return facebookService.checkLoginStatus()
     .then( response => {
       if (response.status === 'connected') {
-        this.fbLogged = true;
-        this.facebookProfileUpdate(response);
+        let fbAuthInfo = {
+          facebook: {
+            facebookID: response.authResponse.userID,
+            accessToken: response.authResponse.accessToken,
+            tokenTTL: response.authResponse.expiresIn,
+            tokenTimeStamp: Date.now(),
+          },
+        };
+        return authService.updateSocialUser(fbAuthInfo)
+        .then( response => {
+          console.log(response, 'response?');
+        })
+        .catch( err => {
+          console.error(err);
+        });
       }
 
-      this.fbLogged = false;
-      console.log(response, 'check status response');
+      console.log(response.status);
     });
   };
 
-  this.facebookProfileUpdate = function(authObj) {
-    $log.debug('hit facebookProfileUpdate()');
-
-    let fbAuthInfo = {
-      facebook: {
-        facebookID: authObj.authResponse.userID,
-        accessToken: authObj.authResponse.accessToken,
-        tokenTTL: authObj.authResponse.expiresIn,
-        tokenTimeStamp: Date.now(),
-      },
-    };
-    return profileService.updateSocialProfile(this.profile, fbAuthInfo)
-    .then( profile => {
-      console.log(profile, 'profile???');
-      this.profile = profile;
-    })
-    .catch( err => {
-      console.error(err);
-    });
-  };
+  // this.facebookProfileUpdate = function(authObj) {
+  //   $log.debug('hit facebookProfileUpdate()');
+  //
+  //   let fbAuthInfo = {
+  //     facebook: {
+  //       facebookID: authObj.authResponse.userID,
+  //       accessToken: authObj.authResponse.accessToken,
+  //       tokenTTL: authObj.authResponse.expiresIn,
+  //       tokenTimeStamp: Date.now(),
+  //     },
+  //   };
+  //   return authService.updateSocialProfile(fbAuthInfo)
+  //   .then( profile => {
+  //     console.log(profile, 'profile???');
+  //     this.profile = profile;
+  //   })
+  //   .catch( err => {
+  //     console.error(err);
+  //   });
+  // };
 
   this.facebookLikesUpdate = function(data) {
     $log.debug('hit facebookLikesUpdate()');
@@ -92,7 +104,7 @@ function ProfileController($log, profileService, facebookService, Facebook) {
     let fbLikes = {
       facebookLikes: data.likes.data,
     };
-    return profileService.updateSocialProfile(this.profile, fbLikes)
+    return profileService.updateSocialLikes(this.profile, fbLikes)
     .then( profile => {
       console.log(profile, 'profile with likes???');
       this.profile = profile;

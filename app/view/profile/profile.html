@@ -8,13 +8,11 @@
     <p> {{ profileCtrl.profile.email }} </p>
     <p> {{ profileCtrl.profile.username }} </p>
     <p> {{ profileCtrl.profile.phone }} </p>
+    <p> {{ profileCtrl.profile.facebookLikes.length }} </p>
   </div>
 
   <section id="social-media-container">
     <ul>
-      <li>
-        <a ng-href="{{profileCtrl.facebookAUTHURL}}"> Connect Facebook Account </a>
-      </li>
       <li>
         <button type="button"
           ng-click="profileCtrl.intentLogin()">TESTING</button>

@@ -97,5 +97,30 @@ function authService($q, $log, $http, $window) {
     });
   };
 
+  service.updateSocialUser = function(data) {
+    $log.debug('profileService.updateSocialUser()');
+
+    return service.getToken()
+    .then( token => {
+      let url = `${__API_URL__}/api/user/social`;
+      let config = {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      return $http.put(url, data, config);
+    })
+    .then( res => {
+      console.log(res, 'response??');
+      return res.data;
+    })
+    .catch( err => {
+      $log.error(err.message);
+      return $q.reject(err);
+    });
+  };
+
   return service;
 }

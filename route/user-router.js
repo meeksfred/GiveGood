@@ -49,6 +49,7 @@ userRouter.get('/api/login', basicAuth, (req, res, next) => {
 // Find resources on how to get a proper 'Forgot Password' workflow setup.
 // userRouter.put('/api/resetPassword/:userID', bearerAuth, (req, res, next) => {})
 
+// might need to change this endpoint
 userRouter.delete('/api/deleteAccount/:userID', bearerAuth, (req, res, next) => {
   debug('hit route DELETE /api/deleteAccount/:userID');
 
@@ -63,4 +64,22 @@ userRouter.delete('/api/deleteAccount/:userID', bearerAuth, (req, res, next) => 
   .catch( err => Promise.reject(err, err.message))
   .then( () => res.sendStatus(204))
   .catch(next);
+});
+
+userRouter.put('/api/user/social', bearerAuth, jsonParser, (req, res, next) => {
+  debug('hit route PUT /api/user/social');
+
+  User.findById(req.user._id)
+  .catch( err => Promise.reject(createError(404, err.message)))
+  .then( user => {
+    if (user.id.toString() !== req.user._id.toString()) {
+      return Promise.reject(createError(401, 'unauthorized user'));
+    }
+    return User.findByIdAndUpdate(req.user._id, req.body, {new: true, runValidators: true});
+  })
+  .then( user => {
+    console.log(user, 'updated???');
+    res.json('Success');
+  })
+  .catch( next );
 });

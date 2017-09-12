@@ -9,7 +9,7 @@ function fbService($q, $log, $http, $window, Facebook) {
 
   service.checkLoginStatus = function() {
     return Facebook.getLoginStatus( response => {
-      return $q.resolve(response);
+      $q.resolve(response);
     });
   };
 
